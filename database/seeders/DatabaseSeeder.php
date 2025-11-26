@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // Seed CTF data
+        $this->call(CtfSeeder::class);
     }
 }
