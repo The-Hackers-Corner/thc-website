@@ -82,18 +82,18 @@ export function AppSidebar() {
                 ) : (
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton size="lg" asChild>
-                                <Link href={login()} className="w-full">
-                                    <LogIn />
-                                    <span>Sign In</span>
+                            <SidebarMenuButton size="lg" asChild tooltip="Sign In">
+                                <Link href={login()} className="w-full group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center">
+                                    <LogIn className="group-data-[collapsible=icon]:m-0" />
+                                    <span className="group-data-[collapsible=icon]:hidden">Sign In</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton size="lg" asChild>
-                                <Link href={register()} className="w-full">
-                                    <UserPlus />
-                                    <span>Register</span>
+                            <SidebarMenuButton size="lg" asChild tooltip="Register">
+                                <Link href={register()} className="w-full group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center">
+                                    <UserPlus className="group-data-[collapsible=icon]:m-0" />
+                                    <span className="group-data-[collapsible=icon]:hidden">Register</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
