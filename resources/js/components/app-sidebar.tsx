@@ -32,16 +32,6 @@ export function AppSidebar() {
             ]
             : []),
         {
-            title: 'CTF Arena',
-            href: ctf.index(),
-            icon: Trophy,
-        },
-        {
-            title: 'Leaderboard',
-            href: leaderboard.index(),
-            icon: Users,
-        },
-        {
             title: 'About',
             href: '/about',
             icon: Info,
@@ -55,6 +45,16 @@ export function AppSidebar() {
             title: 'Resources',
             href: '/resources',
             icon: Wrench,
+        },
+        {
+            title: 'CTF Arena',
+            href: ctf.index(),
+            icon: Trophy,
+        },
+        {
+            title: 'Leaderboard',
+            href: leaderboard.index(),
+            icon: Users,
         },
     ];
 
