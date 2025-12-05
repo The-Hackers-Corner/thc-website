@@ -19,7 +19,8 @@ return new class extends Migration
             $table->boolean('is_correct')->default(false);
             $table->timestamps();
 
-            $table->unique(['user_id', 'challenge_id']);
+            // Removed unique constraint to allow multiple submissions per user per challenge
+            // The application logic prevents duplicate exact flag submissions
         });
     }
 

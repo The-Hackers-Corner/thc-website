@@ -1,4 +1,3 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -10,41 +9,62 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { dashboard, login, register } from '@/routes';
+import ctf from '@/routes/ctf';
+import leaderboard from '@/routes/leaderboard';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { LayoutGrid, Trophy, Users, Info, Wrench, MessageCircle, LogIn, UserPlus } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
-
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    const isAuthenticated = !!auth.user;
+
+    const mainNavItems: NavItem[] = [
+        ...(isAuthenticated
+            ? [
+                {
+                    title: 'Dashboard',
+                    href: dashboard(),
+                    icon: LayoutGrid,
+                },
+            ]
+            : []),
+        {
+            title: 'CTF Arena',
+            href: ctf.index(),
+            icon: Trophy,
+        },
+        {
+            title: 'Leaderboard',
+            href: leaderboard.index(),
+            icon: Users,
+        },
+        {
+            title: 'About',
+            href: '/about',
+            icon: Info,
+        },
+        {
+            title: 'Community',
+            href: '/community',
+            icon: MessageCircle,
+        },
+        {
+            title: 'Resources',
+            href: '/resources',
+            icon: Wrench,
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={isAuthenticated ? dashboard() : '/'} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -57,8 +77,28 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser />
+                {isAuthenticated ? (
+                    <NavUser />
+                ) : (
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton size="lg" asChild>
+                                <Link href={login()} className="w-full">
+                                    <LogIn />
+                                    <span>Sign In</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton size="lg" asChild>
+                                <Link href={register()} className="w-full">
+                                    <UserPlus />
+                                    <span>Register</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                )}
             </SidebarFooter>
         </Sidebar>
     );
