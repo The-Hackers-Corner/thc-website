@@ -24,11 +24,7 @@ interface UserRank {
 
 interface LeaderboardProps {
     users: UserRank[];
-    userRank: {
-        rank: number;
-        name: string;
-        score: number;
-    } | null;
+    userRank: UserRank | null;
 }
 
 function getRankIcon(rank: number) {
@@ -73,7 +69,7 @@ export default function Leaderboard({ users, userRank }: LeaderboardProps) {
                         <div className="grid gap-4 md:grid-cols-3">
                             {topThree.map((user, index) => {
                                 const isSecond = index === 1;
-                                const isThird = index === 2;
+                                const _isThird = index === 2;
                                 const isFirst = index === 0;
 
                                 return (
@@ -84,7 +80,9 @@ export default function Leaderboard({ users, userRank }: LeaderboardProps) {
                                                 ? 'md:order-2 border-yellow-500 dark:border-yellow-600'
                                                 : isSecond
                                                   ? 'md:order-1'
-                                                  : 'md:order-3'
+                                                  : _isThird
+                                                    ? 'md:order-3'
+                                                    : ''
                                         }`}
                                     >
                                         <CardHeader className="text-center pb-2">

@@ -25,20 +25,14 @@ const communityLinks: CommunityLink[] = [
         name: 'Discord Server',
         description:
             'Join our Discord server for real-time discussions, help, and community events. Connect with fellow hackers and get support.',
-        url: 'https://discord.gg/thc', // Update with actual Discord link
+        url: 'https://discord.gg/FZM4VYwU2W',
         icon: <MessageCircle className="h-5 w-5" />,
     },
     {
         name: 'GitHub Organization',
         description:
             'Contribute to open-source security tools and projects. Collaborate on community-driven initiatives.',
-        url: 'https://github.com/thc-tunisia', // Update with actual GitHub link
-    },
-    {
-        name: 'Telegram Group',
-        description:
-            'Join our Telegram group for quick updates, announcements, and casual discussions with the community.',
-        url: 'https://t.me/thc_tunisia', // Update with actual Telegram link
+        url: 'https://github.com/The-Hackers-Corner',
     },
 ];
 

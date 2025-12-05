@@ -22,7 +22,7 @@ export default function About() {
                     <div className="text-center">
                         <h1 className="text-4xl font-bold tracking-tight">About THC</h1>
                         <p className="mt-4 text-lg text-muted-foreground">
-                            Tunisian Hackers Community - Empowering the next generation of
+                            The Hackers' Corner - Empowering the next generation of
                             cybersecurity professionals
                         </p>
                     </div>
@@ -37,7 +37,7 @@ export default function About() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <p className="text-muted-foreground leading-relaxed">
-                                THC (Tunisian Hackers Community) is dedicated to fostering a vibrant
+                                THC (The Hackers' Corner) is dedicated to fostering a vibrant
                                 ecosystem of cybersecurity enthusiasts, ethical hackers, and
                                 technology innovators. Our mission is to:
                             </p>
