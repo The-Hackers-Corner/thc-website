@@ -267,7 +267,14 @@ export default function ChallengePlay({
                                 <Separator />
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Status:</span>
-                                    <Badge variant={hasSolved ? 'default' : 'outline'}>
+                                    <Badge
+                                        variant={hasSolved ? 'default' : 'outline'}
+                                        className={
+                                            hasSolved
+                                                ? 'bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-emerald-50'
+                                                : 'border-amber-500 text-amber-600 dark:text-amber-400'
+                                        }
+                                    >
                                         {hasSolved ? 'Solved' : 'Unsolved'}
                                     </Badge>
                                 </div>

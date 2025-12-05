@@ -122,7 +122,13 @@ export default function CtfList({ categories, solvedChallengeIds }: CtfListProps
                                                     href={ctf.challenges.show(challenge.id).url}
                                                     className="group"
                                                 >
-                                                    <Card className="transition-all hover:shadow-md hover:border-primary/20 h-full">
+                                                    <Card
+                                                        className={`transition-all hover:shadow-md hover:border-primary/40 h-full ${
+                                                            isSolved
+                                                                ? 'border-emerald-500/70 bg-emerald-500/5 dark:bg-emerald-500/10'
+                                                                : 'border-border/60 bg-background'
+                                                        }`}
+                                                    >
                                                         <CardHeader className="pb-3">
                                                             <div className="flex items-start justify-between gap-2">
                                                                 <CardTitle className="text-base font-semibold group-hover:text-primary transition-colors flex-1">
@@ -138,12 +144,29 @@ export default function CtfList({ categories, solvedChallengeIds }: CtfListProps
                                                                 {challenge.description}
                                                             </p>
                                                             <div className="flex items-center justify-between pt-2">
-                                                                <Badge variant="secondary" className="font-medium">
+                                                                <Badge
+                                                                    variant={isSolved ? 'default' : 'secondary'}
+                                                                    className={
+                                                                        isSolved
+                                                                            ? 'font-medium bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-emerald-50'
+                                                                            : 'font-medium'
+                                                                    }
+                                                                >
                                                                     {challenge.points} pts
                                                                 </Badge>
-                                                                {isSolved && (
-                                                                    <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700">
+                                                                {isSolved ? (
+                                                                    <Badge
+                                                                        variant="outline"
+                                                                        className="border-emerald-500 text-emerald-600 dark:text-emerald-400"
+                                                                    >
                                                                         Solved
+                                                                    </Badge>
+                                                                ) : (
+                                                                    <Badge
+                                                                        variant="outline"
+                                                                        className="border-amber-500 text-amber-600 dark:text-amber-400"
+                                                                    >
+                                                                        Unsolved
                                                                     </Badge>
                                                                 )}
                                                             </div>
