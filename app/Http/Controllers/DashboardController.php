@@ -25,12 +25,13 @@ class DashboardController extends Controller
                 ->where('is_correct', true)
                 ->distinct('challenge_id')
                 ->count('challenge_id');
-            $totalPoints = $user->score;
+            $userScore = $user->score ?? 0;
+            $totalPoints = $userScore;
 
             // Calculate rank
-            $rank = User::where('score', '>', $user->score)
-                ->orWhere(function ($query) use ($user) {
-                    $query->where('score', '=', $user->score)
+            $rank = User::where('score', '>', $userScore)
+                ->orWhere(function ($query) use ($userScore, $user) {
+                    $query->where('score', '=', $userScore)
                           ->where('updated_at', '<', $user->updated_at);
                 })
                 ->count() + 1;
