@@ -22,7 +22,7 @@ export function AppSidebar() {
     const isAuthenticated = !!auth.user;
     const isAdmin =
         isAuthenticated &&
-        (Boolean((auth.user as any).is_admin) ||
+        (auth.user.is_admin ||
             (adminEmail && auth.user.email === adminEmail));
 
     const mainNavItems: NavItem[] = [
