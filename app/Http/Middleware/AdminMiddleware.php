@@ -15,6 +15,22 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $user = $request->user();
+
+        $adminEmail = env('ADMIN_EMAIL');
+
+        if (! $user) {
+            abort(403);
+        }
+
+        if ($user->is_admin) {
+            return $next($request);
+        }
+
+        if ($adminEmail && $user->email === $adminEmail) {
+            return $next($request);
+        }
+
+        abort(403);
     }
 }

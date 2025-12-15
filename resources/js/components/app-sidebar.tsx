@@ -14,12 +14,16 @@ import ctf from '@/routes/ctf';
 import leaderboard from '@/routes/leaderboard';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Trophy, Users, Info, Wrench, MessageCircle, LogIn, UserPlus } from 'lucide-react';
+import { LayoutGrid, Trophy, Users, Info, Wrench, MessageCircle, LogIn, UserPlus, ShieldCheck } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, adminEmail } = usePage<SharedData>().props;
     const isAuthenticated = !!auth.user;
+    const isAdmin =
+        isAuthenticated &&
+        (Boolean((auth.user as any).is_admin) ||
+            (adminEmail && auth.user.email === adminEmail));
 
     const mainNavItems: NavItem[] = [
         ...(isAuthenticated
@@ -29,6 +33,15 @@ export function AppSidebar() {
                     href: dashboard(),
                     icon: LayoutGrid,
                 },
+                ...(isAdmin
+                    ? [
+                          {
+                              title: 'Admin',
+                              href: '/admin',
+                              icon: ShieldCheck,
+                          } satisfies NavItem,
+                      ]
+                    : []),
             ]
             : []),
         {
