@@ -213,4 +213,3 @@ export default function Dashboard({ ctfStats }: DashboardProps) {
         </AppLayout>
     );
 }
-

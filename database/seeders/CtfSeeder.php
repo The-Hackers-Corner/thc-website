@@ -311,4 +311,3 @@ class CtfSeeder extends Seeder
         ]);
     }
 }
-

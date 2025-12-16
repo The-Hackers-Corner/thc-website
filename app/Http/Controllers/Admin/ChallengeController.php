@@ -121,4 +121,3 @@ class ChallengeController extends Controller
         return redirect()->route('admin.challenges.index')->with('success', 'Challenge deleted successfully.');
     }
 }
-

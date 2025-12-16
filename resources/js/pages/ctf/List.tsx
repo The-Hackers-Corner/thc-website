@@ -197,4 +197,3 @@ export default function CtfList({ categories, solvedChallengeIds }: CtfListProps
         </AppLayout>
     );
 }
-

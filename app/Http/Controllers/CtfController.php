@@ -170,4 +170,3 @@ class CtfController extends Controller
         return back()->withErrors(['flag' => 'Incorrect flag. Try again!']);
     }
 }
-
