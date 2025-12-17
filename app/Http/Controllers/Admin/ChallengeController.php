@@ -24,7 +24,7 @@ class ChallengeController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
-        return Inertia::render('Admin/Challenges', [
+        return Inertia::render('Admin/Admin', [
             'challenges' => $challenges,
             'categories' => $categories,
             'routes' => [
