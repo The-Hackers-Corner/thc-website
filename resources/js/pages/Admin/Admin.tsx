@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
+// Import Tabs component from shadcn/ui
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface Category {
     id: number;
@@ -24,14 +28,24 @@ interface Challenge {
     category?: Category;
 }
 
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    is_admin: boolean;
+    created_at: string;
+}
+
 interface RoutesProps {
     challengesBase: string;
     categoriesBase: string;
+    usersBase: string;
 }
 
 interface PageProps {
     challenges: Challenge[];
     categories: Category[];
+    users: User[];
     routes: RoutesProps;
 }
 
@@ -42,7 +56,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Admin({ challenges, categories, routes }: PageProps) {
+function Admin({ challenges, categories, users, routes }: PageProps) {
     const [form, setForm] = useState({
         category_id: categories[0]?.id?.toString() ?? '',
         title: '',
@@ -112,6 +126,20 @@ export default function Admin({ challenges, categories, routes }: PageProps) {
         router.delete(`${routes.categoriesBase}/${category.id}`);
     };
 
+    const toggleAdmin = (user: User) => {
+        if (!confirm(`Are you sure you want to ${user.is_admin ? 'remove admin privileges from' : 'make admin'} ${user.name}?`)) return;
+        router.put(`${routes.usersBase}/${user.id}`, {
+            is_admin: !user.is_admin
+        });
+    };
+
+    const deleteUser = (user: User) => {
+        if (!confirm(`Are you sure you want to delete user ${user.name}? This action cannot be undone.`)) return;
+        if (confirm('This will permanently delete the user and all their data. Are you absolutely sure?')) {
+            router.delete(`${routes.usersBase}/${user.id}`);
+        }
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin Panel" />
@@ -120,7 +148,15 @@ export default function Admin({ challenges, categories, routes }: PageProps) {
                     <h1 className="text-2xl font-bold">Admin Panel</h1>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Tabs defaultValue="challenges" className="w-full">
+                    <TabsList className="grid w-full grid-cols-3 max-w-md mb-6">
+                        <TabsTrigger value="challenges">Challenges</TabsTrigger>
+                        <TabsTrigger value="categories">Categories</TabsTrigger>
+                        <TabsTrigger value="users">Users</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="challenges" className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Add Challenge */}
                     <Card>
                         <CardHeader>
@@ -205,99 +241,12 @@ export default function Admin({ challenges, categories, routes }: PageProps) {
                         </CardContent>
                     </Card>
 
-                    {/* Add Category */}
+                    {/* Challenges List */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Add New Category</CardTitle>
+                            <CardTitle>Challenges</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={createCategory} className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Category Name</label>
-                                    <Input
-                                        value={newCategory.name}
-                                        onChange={(e) =>
-                                            setNewCategory({ ...newCategory, name: e.target.value })
-                                        }
-                                        placeholder="Category name"
-                                        required
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">
-                                        Description (Optional)
-                                    </label>
-                                    <Input
-                                        value={newCategory.description}
-                                        onChange={(e) =>
-                                            setNewCategory({ ...newCategory, description: e.target.value })
-                                        }
-                                        placeholder="Category description"
-                                    />
-                                </div>
-
-                                <Button type="submit" className="w-full">
-                                    Add Category
-                                </Button>
-                            </form>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Categories List */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Categories</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-2">
-                            {categories.map((category) => (
-                                <div
-                                    key={category.id}
-                                    className="flex items-center justify-between p-3 border rounded-lg"
-                                >
-                                    <div>
-                                        <h3 className="font-medium">{category.name}</h3>
-                                        {category.description && (
-                                            <p className="text-sm text-muted-foreground">
-                                                {category.description}
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => renameCategory(category)}
-                                        >
-                                            Rename
-                                        </Button>
-                                        <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={() => deleteCategory(category)}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                            {categories.length === 0 && (
-                                <p className="text-muted-foreground text-center py-4">
-                                    No categories yet. Add one above.
-                                </p>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Challenges List */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Challenges</CardTitle>
-                    </CardHeader>
-                    <CardContent>
                         <div className="space-y-2">
                             {challenges.map((challenge) => (
                                 <div
@@ -341,9 +290,160 @@ export default function Admin({ challenges, categories, routes }: PageProps) {
                                 </p>
                             )}
                         </div>
-                    </CardContent>
-                </Card>
-            </div>
-        </AppLayout>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="categories" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Add New Category</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={createCategory} className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Category Name</label>
+                                    <Input
+                                        value={newCategory.name}
+                                        onChange={(e) =>
+                                            setNewCategory({ ...newCategory, name: e.target.value })
+                                        }
+                                        placeholder="Category name"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Description (Optional)
+                                    </label>
+                                    <Input
+                                        value={newCategory.description}
+                                        onChange={(e) =>
+                                            setNewCategory({ ...newCategory, description: e.target.value })
+                                        }
+                                        placeholder="Category description"
+                                    />
+                                </div>
+
+                                <Button type="submit" className="w-full">
+                                    Add Category
+                                </Button>
+                            </form>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Categories</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-2">
+                                {categories.map((category) => (
+                                    <div
+                                        key={category.id}
+                                        className="flex items-center justify-between p-3 border rounded-lg"
+                                    >
+                                        <div>
+                                            <h3 className="font-medium">{category.name}</h3>
+                                            {category.description && (
+                                                <p className="text-sm text-muted-foreground">
+                                                    {category.description}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => renameCategory(category)}
+                                            >
+                                                Rename
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => deleteCategory(category)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
+                                {categories.length === 0 && (
+                                    <p className="text-muted-foreground text-center py-4">
+                                        No categories yet. Add one above.
+                                    </p>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="users" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Users Management</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Name</TableHead>
+                                        <TableHead>Email</TableHead>
+                                        <TableHead>Role</TableHead>
+                                        <TableHead>Joined</TableHead>
+                                        <TableHead className="text-right">Actions</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {users.map((user) => (
+                                        <TableRow key={user.id}>
+                                            <TableCell className="font-medium">{user.name}</TableCell>
+                                            <TableCell>{user.email}</TableCell>
+                                            <TableCell>
+                                                <Badge variant={user.is_admin ? 'default' : 'secondary'}>
+                                                    {user.is_admin ? 'Admin' : 'User'}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                {new Date(user.created_at).toLocaleDateString()}
+                                            </TableCell>
+                                            <TableCell className="text-right space-x-2">
+                                                <Button
+                                                    variant={user.is_admin ? 'outline' : 'default'}
+                                                    size="sm"
+                                                    onClick={() => toggleAdmin(user)}
+                                                >
+                                                    {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+                                                </Button>
+                                                <Button
+                                                    variant="destructive"
+                                                    size="sm"
+                                                    onClick={() => deleteUser(user)}
+                                                    disabled={user.is_admin} // Prevent deleting own admin account
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                    {users.length === 0 && (
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
+                                                No users found.
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+        </div>
     );
 }
+
+export default Admin;
