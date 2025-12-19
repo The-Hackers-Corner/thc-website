@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ChallengeController as AdminChallengeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CtfController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LeaderboardController;
@@ -30,6 +31,9 @@ Route::middleware(['auth', 'verified', 'admin'])
         // Category management (no index, managed inside admin dashboard)
         Route::resource('categories', AdminCategoryController::class)
             ->only(['store', 'update', 'destroy']);
+
+        // User management
+        Route::resource('users', AdminUserController::class);
     });
 
 // Public Pages

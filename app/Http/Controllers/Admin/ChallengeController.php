@@ -24,12 +24,16 @@ class ChallengeController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
+        $users = \App\Models\User::orderBy('created_at', 'desc')->get();
+
         return Inertia::render('Admin/Admin', [
             'challenges' => $challenges,
             'categories' => $categories,
+            'users' => $users,
             'routes' => [
                 'challengesBase' => route('admin.challenges.index'),
                 'categoriesBase' => route('admin.categories.store'),
+                'usersBase' => route('admin.users.index'), // Assuming this route exists, otherwise use a placeholder or check routes
             ],
         ]);
     }

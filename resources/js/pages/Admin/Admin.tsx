@@ -157,292 +157,293 @@ function Admin({ challenges, categories, users, routes }: PageProps) {
 
                     <TabsContent value="challenges" className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Add Challenge */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Add New Challenge</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <form onSubmit={submit} className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Category</label>
-                                    <Select
-                                        value={form.category_id}
-                                        onValueChange={(value) => onChange('category_id', value)}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select a category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {categories.map((category) => (
-                                                <SelectItem key={category.id} value={String(category.id)}>
-                                                    {category.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                            {/* Add Challenge */}
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Add New Challenge</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <form onSubmit={submit} className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">Category</label>
+                                            <Select
+                                                value={form.category_id}
+                                                onValueChange={(value) => onChange('category_id', value)}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a category" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {categories.map((category) => (
+                                                        <SelectItem key={category.id} value={String(category.id)}>
+                                                            {category.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Title</label>
-                                    <Input
-                                        value={form.title}
-                                        onChange={(e) => onChange('title', e.target.value)}
-                                        placeholder="Challenge title"
-                                        required
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">Title</label>
+                                            <Input
+                                                value={form.title}
+                                                onChange={(e) => onChange('title', e.target.value)}
+                                                placeholder="Challenge title"
+                                                required
+                                            />
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Description</label>
-                                    <Input
-                                        value={form.description}
-                                        onChange={(e) => onChange('description', e.target.value)}
-                                        placeholder="Challenge description"
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">Description</label>
+                                            <Input
+                                                value={form.description}
+                                                onChange={(e) => onChange('description', e.target.value)}
+                                                placeholder="Challenge description"
+                                            />
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Flag</label>
-                                    <Input
-                                        value={form.flag}
-                                        onChange={(e) => onChange('flag', e.target.value)}
-                                        placeholder="flag{...}"
-                                        required
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">Flag</label>
+                                            <Input
+                                                value={form.flag}
+                                                onChange={(e) => onChange('flag', e.target.value)}
+                                                placeholder="flag{...}"
+                                                required
+                                            />
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Points</label>
-                                    <Input
-                                        type="number"
-                                        min="0"
-                                        value={form.points}
-                                        onChange={(e) => onChange('points', e.target.value)}
-                                        required
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium mb-1">Points</label>
+                                            <Input
+                                                type="number"
+                                                min="0"
+                                                value={form.points}
+                                                onChange={(e) => onChange('points', e.target.value)}
+                                                required
+                                            />
+                                        </div>
 
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="is_active"
-                                        checked={form.is_active}
-                                        onCheckedChange={(checked) => onChange('is_active', checked)}
-                                    />
-                                    <label htmlFor="is_active" className="text-sm font-medium">
-                                        Active
-                                    </label>
-                                </div>
+                                        <div className="flex items-center space-x-2">
+                                            <Switch
+                                                id="is_active"
+                                                checked={form.is_active}
+                                                onCheckedChange={(checked) => onChange('is_active', checked)}
+                                            />
+                                            <label htmlFor="is_active" className="text-sm font-medium">
+                                                Active
+                                            </label>
+                                        </div>
 
-                                <Button type="submit" className="w-full">
-                                    Add Challenge
-                                </Button>
-                            </form>
-                        </CardContent>
-                    </Card>
-
-                    {/* Challenges List */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Challenges</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                        <div className="space-y-2">
-                            {challenges.map((challenge) => (
-                                <div
-                                    key={challenge.id}
-                                    className="flex items-center justify-between p-3 border rounded-lg"
-                                >
-                                    <div>
-                                        <h3 className="font-medium">
-                                            {challenge.title}{' '}
-                                            <span className="text-sm text-muted-foreground">
-                                                ({challenge.category?.name})
-                                            </span>
-                                        </h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {challenge.points} points •{' '}
-                                            {challenge.is_active ? (
-                                                <span className="text-green-500">Active</span>
-                                            ) : (
-                                                <span className="text-red-500">Inactive</span>
-                                            )}
-                                        </p>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <Switch
-                                            checked={challenge.is_active}
-                                            onCheckedChange={() => toggleActive(challenge)}
-                                        />
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => remove(challenge)}
-                                        >
-                                            Delete
+                                        <Button type="submit" className="w-full">
+                                            Add Challenge
                                         </Button>
+                                    </form>
+                                </CardContent>
+                            </Card>
+
+                            {/* Challenges List */}
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Challenges</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-2">
+                                        {challenges.map((challenge) => (
+                                            <div
+                                                key={challenge.id}
+                                                className="flex items-center justify-between p-3 border rounded-lg"
+                                            >
+                                                <div>
+                                                    <h3 className="font-medium">
+                                                        {challenge.title}{' '}
+                                                        <span className="text-sm text-muted-foreground">
+                                                            ({challenge.category?.name})
+                                                        </span>
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {challenge.points} points •{' '}
+                                                        {challenge.is_active ? (
+                                                            <span className="text-green-500">Active</span>
+                                                        ) : (
+                                                            <span className="text-red-500">Inactive</span>
+                                                        )}
+                                                    </p>
+                                                </div>
+                                                <div className="flex space-x-2">
+                                                    <Switch
+                                                        checked={challenge.is_active}
+                                                        onCheckedChange={() => toggleActive(challenge)}
+                                                    />
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => remove(challenge)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {challenges.length === 0 && (
+                                            <p className="text-muted-foreground text-center py-4">
+                                                No challenges yet. Add one above.
+                                            </p>
+                                        )}
                                     </div>
-                                </div>
-                            ))}
-                            {challenges.length === 0 && (
-                                <p className="text-muted-foreground text-center py-4">
-                                    No challenges yet. Add one above.
-                                </p>
-                            )}
+                                </CardContent>
+                            </Card>
                         </div>
+                    </TabsContent>
+
+                    <TabsContent value="categories" className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Add New Category</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <form onSubmit={createCategory} className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1">Category Name</label>
+                                        <Input
+                                            value={newCategory.name}
+                                            onChange={(e) =>
+                                                setNewCategory({ ...newCategory, name: e.target.value })
+                                            }
+                                            placeholder="Category name"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1">
+                                            Description (Optional)
+                                        </label>
+                                        <Input
+                                            value={newCategory.description}
+                                            onChange={(e) =>
+                                                setNewCategory({ ...newCategory, description: e.target.value })
+                                            }
+                                            placeholder="Category description"
+                                        />
+                                    </div>
+
+                                    <Button type="submit" className="w-full">
+                                        Add Category
+                                    </Button>
+                                </form>
                             </CardContent>
                         </Card>
-                    </div>
-                </TabsContent>
 
-                <TabsContent value="categories" className="space-y-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Add New Category</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <form onSubmit={createCategory} className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Category Name</label>
-                                    <Input
-                                        value={newCategory.name}
-                                        onChange={(e) =>
-                                            setNewCategory({ ...newCategory, name: e.target.value })
-                                        }
-                                        placeholder="Category name"
-                                        required
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">
-                                        Description (Optional)
-                                    </label>
-                                    <Input
-                                        value={newCategory.description}
-                                        onChange={(e) =>
-                                            setNewCategory({ ...newCategory, description: e.target.value })
-                                        }
-                                        placeholder="Category description"
-                                    />
-                                </div>
-
-                                <Button type="submit" className="w-full">
-                                    Add Category
-                                </Button>
-                            </form>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Categories</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-2">
-                                {categories.map((category) => (
-                                    <div
-                                        key={category.id}
-                                        className="flex items-center justify-between p-3 border rounded-lg"
-                                    >
-                                        <div>
-                                            <h3 className="font-medium">{category.name}</h3>
-                                            {category.description && (
-                                                <p className="text-sm text-muted-foreground">
-                                                    {category.description}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="flex space-x-2">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => renameCategory(category)}
-                                            >
-                                                Rename
-                                            </Button>
-                                            <Button
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() => deleteCategory(category)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ))}
-                                {categories.length === 0 && (
-                                    <p className="text-muted-foreground text-center py-4">
-                                        No categories yet. Add one above.
-                                    </p>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-
-                <TabsContent value="users" className="space-y-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Users Management</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Email</TableHead>
-                                        <TableHead>Role</TableHead>
-                                        <TableHead>Joined</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {users.map((user) => (
-                                        <TableRow key={user.id}>
-                                            <TableCell className="font-medium">{user.name}</TableCell>
-                                            <TableCell>{user.email}</TableCell>
-                                            <TableCell>
-                                                <Badge variant={user.is_admin ? 'default' : 'secondary'}>
-                                                    {user.is_admin ? 'Admin' : 'User'}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                {new Date(user.created_at).toLocaleDateString()}
-                                            </TableCell>
-                                            <TableCell className="text-right space-x-2">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Categories</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-2">
+                                    {categories.map((category) => (
+                                        <div
+                                            key={category.id}
+                                            className="flex items-center justify-between p-3 border rounded-lg"
+                                        >
+                                            <div>
+                                                <h3 className="font-medium">{category.name}</h3>
+                                                {category.description && (
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {category.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <div className="flex space-x-2">
                                                 <Button
-                                                    variant={user.is_admin ? 'outline' : 'default'}
+                                                    variant="outline"
                                                     size="sm"
-                                                    onClick={() => toggleAdmin(user)}
+                                                    onClick={() => renameCategory(category)}
                                                 >
-                                                    {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+                                                    Rename
                                                 </Button>
                                                 <Button
                                                     variant="destructive"
                                                     size="sm"
-                                                    onClick={() => deleteUser(user)}
-                                                    disabled={user.is_admin} // Prevent deleting own admin account
+                                                    onClick={() => deleteCategory(category)}
                                                 >
                                                     Delete
                                                 </Button>
-                                            </TableCell>
-                                        </TableRow>
+                                            </div>
+                                        </div>
                                     ))}
-                                    {users.length === 0 && (
-                                        <TableRow>
-                                            <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
-                                                No users found.
-                                            </TableCell>
-                                        </TableRow>
+                                    {categories.length === 0 && (
+                                        <p className="text-muted-foreground text-center py-4">
+                                            No categories yet. Add one above.
+                                        </p>
                                     )}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-            </Tabs>
-        </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    <TabsContent value="users" className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Users Management</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Name</TableHead>
+                                            <TableHead>Email</TableHead>
+                                            <TableHead>Role</TableHead>
+                                            <TableHead>Joined</TableHead>
+                                            <TableHead className="text-right">Actions</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {users.map((user) => (
+                                            <TableRow key={user.id}>
+                                                <TableCell className="font-medium">{user.name}</TableCell>
+                                                <TableCell>{user.email}</TableCell>
+                                                <TableCell>
+                                                    <Badge variant={user.is_admin ? 'default' : 'secondary'}>
+                                                        {user.is_admin ? 'Admin' : 'User'}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {new Date(user.created_at).toLocaleDateString()}
+                                                </TableCell>
+                                                <TableCell className="text-right space-x-2">
+                                                    <Button
+                                                        variant={user.is_admin ? 'outline' : 'default'}
+                                                        size="sm"
+                                                        onClick={() => toggleAdmin(user)}
+                                                    >
+                                                        {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+                                                    </Button>
+                                                    <Button
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        onClick={() => deleteUser(user)}
+                                                        disabled={user.is_admin} // Prevent deleting own admin account
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                        {users.length === 0 && (
+                                            <TableRow>
+                                                <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
+                                                    No users found.
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
+            </div>
+        </AppLayout>
     );
 }
 
